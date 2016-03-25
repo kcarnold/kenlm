@@ -220,9 +220,16 @@ double ThreadTime(){
   return ticks / (10 * 1000 * 1000);
 #else
   struct rusage usage;
+
+#ifdef __linux__
   if(getrusage(RUSAGE_THREAD, &usage)){
     return -1.0;
   }
+#else
+  if(getrusage(RUSAGE_SELF, &usage)){
+    return -1.0;
+  }
+#endif
   double user_time = static_cast<double>(usage.ru_utime.tv_sec) + (static_cast<double>(usage.ru_utime.tv_usec) / 1000000.0);
   double sys_time = static_cast<double>(usage.ru_stime.tv_sec) + (static_cast<double>(usage.ru_stime.tv_usec) / 1000000.0);
   return user_time + sys_time;

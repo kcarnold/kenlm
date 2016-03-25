@@ -1,0 +1,2 @@
+install_name_tool -change libz.1.dylib /usr/lib/libz.1.dylib build/lib.macosx-10.5-x86_64-3.5/kenlm.cpython-35m-darwin.so
+install_name_tool -change liblzma.5.dylib /usr/lib/liblzma.5.dylib build/lib.macosx-10.5-x86_64-3.5/kenlm.cpython-35m-darwin.so
