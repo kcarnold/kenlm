@@ -153,6 +153,9 @@ cdef class Model:
         """Change the given state to a NULL state."""
         self.model.NullContextWrite(&state._c_state)
 
+    def vocab_index(self, str word):
+        return self.vocab.Index(as_str(word))
+
     def BaseScore(self, State in_state, str word, State out_state):
         """
         Return p(word|in_state) and update the output state.
@@ -164,7 +167,12 @@ cdef class Model:
         """
         cdef float total = self.model.BaseScore(&in_state._c_state, self.vocab.Index(as_str(word)), &out_state._c_state)
         return total
-    
+
+    def base_score_from_idx(self, State in_state, _kenlm.WordIndex idx, State out_state):
+        cdef float total = self.model.BaseScore(&in_state._c_state, idx, &out_state._c_state)
+        return total
+
+
     def BaseFullScore(self, State in_state, str word, State out_state):
         """
         Wrapper around model.BaseScore(in_state, Index(word), out_state)
