@@ -18,7 +18,7 @@ if platform.system() != 'Darwin':
     LIBS.append('rt')
 
 
-ARGS = ['-O3', '-DNDEBUG', '-DKENLM_MAX_ORDER=6']
+ARGS = ['-O3', '-DNDEBUG', '-DKENLM_MAX_ORDER=12']
 
 if compile_test('zlib.h', 'z'):
     ARGS.append('-DHAVE_ZLIB')
