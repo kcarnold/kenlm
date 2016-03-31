@@ -139,9 +139,15 @@ double CPUTime() {
 #if defined(_WIN32) || defined(_WIN64)
   return 0.0;
 #else
+#ifdef __linux__
   struct timespec usage;
-  UTIL_THROW_IF(clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &usage), ErrnoException, "clock_gettime failed?!"); 
+  UTIL_THROW_IF(clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &usage), ErrnoException, "clock_gettime failed?!");
   return DoubleSec(usage);
+#else
+  struct timeval now;
+  gettimeofday(&now, NULL);
+  return DoubleSec(now);
+#endif
 #endif
 }
 

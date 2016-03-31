@@ -533,8 +533,12 @@ std::string DefaultTempDirectory() {
   // POSIX says to try these environment variables, in this order:
   const char *const vars[] = {"TMPDIR", "TMP", "TEMPDIR", "TEMP", 0};
   for (int i=0; vars[i]; ++i) {
-#if defined(_GNU_SOURCE) && __GLIBC_PREREQ(2,17)
+#if defined(_GNU_SOURCE)
+#if __GLIBC_PREREQ(2,17)
     const char *val = secure_getenv(vars[i]);
+#else
+    const char *val = getenv(vars[i]);
+#endif
 #else
     const char *val = getenv(vars[i]);
 #endif
