@@ -9,13 +9,18 @@ cdef extern from "lm/return.hh" namespace "lm":
 cdef extern from "lm/state.hh" namespace "lm::ngram":
     cdef cppclass State :
         int Compare(const State &other) const
+        void ZeroRemaining()
+        WordIndex words[]
+        float backoff[]
+        char length
 
-    int hash_value(const State &state) 
+    int hash_value(const State &state)
+
 
 cdef extern from "lm/virtual_interface.hh" namespace "lm::base":
     cdef cppclass Vocabulary:
         WordIndex Index(char*)
-        WordIndex BeginSentence() 
+        WordIndex BeginSentence()
         WordIndex EndSentence()
         WordIndex NotFound()
 

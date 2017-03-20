@@ -72,6 +72,28 @@ cdef class State:
     def __hash__(self):
         return _kenlm.hash_value(self._c_state)
 
+    @property
+    def words(self):
+        return [self._c_state.words[i] for i in range(self._c_state.length)]
+
+    @property
+    def backoff(self):
+        return [self._c_state.backoff[i] for i in range(self._c_state.length)]
+
+    def __repr__(self):
+        return 'State({}, {})'.format(self.words, self.backoff)
+
+    def __getstate__(self):
+        return (self.words, self.backoff)
+
+    def __setstate__(self, state):
+        words, backoff = state
+        self._c_state.length = len(words)
+        for i, (word, backoff) in enumerate(zip(words, backoff)):
+            self._c_state.words[i] = word
+            self._c_state.backoff[i] = backoff
+            self._c_state.ZeroRemaining()
+
 cdef class Model:
     """
     This is closer to a wrapper around lm::ngram::Model.
