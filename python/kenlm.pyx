@@ -1,5 +1,6 @@
 import os
 cimport _kenlm
+cimport cython
 
 cdef bytes as_str(data):
     if isinstance(data, bytes):
@@ -41,6 +42,7 @@ cdef class FullScoreReturn:
         def __get__(self):
             return self.oov
 
+@cython.freelist(128)
 cdef class State:
     """
     Wrapper around lm::ngram::State so that python code can make incremental queries.
