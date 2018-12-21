@@ -45,4 +45,5 @@ setup(
     name='kenlm',
     ext_modules=ext_modules,
     include_package_data=True,
+    description="KenLM: Faster and Smaller Language Model Queries",
 )
